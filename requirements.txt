@@ -1,0 +1,5 @@
+scrapy==2.6.3
+loguru==0.6.0
+pymysql==0.9.3
+kafka-python==2.0.2
+redis==4.1.4
