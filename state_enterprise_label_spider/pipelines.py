@@ -8,7 +8,7 @@
 import pymysql
 import json
 from loguru import logger
-from state_enterprise_label_spider.items import BaseInfoItem
+from state_enterprise_label_spider.items import BaseInfoItem, ListUnicornItem
 from kafka import KafkaProducer
 
 
@@ -35,6 +35,11 @@ class StateEnterpriseLabelSpiderPipeline:
             topic = 'collect_guoqi_base_info'
             self.save_data(item, table)
             self.send_to_kafka(item, topic)
+        if isinstance(item, ListUnicornItem):
+            table = 'list_unicorn_enterprise'
+            topic = 'collect_list_unicorn_enterprise'
+            self.save_data(item, table)
+            self.send_to_kafka(item, topic)
         return item
 
     def save_data(self, item, table_name):
@@ -48,7 +53,7 @@ class StateEnterpriseLabelSpiderPipeline:
                 if column in item:
                     data[column] = item[column]
             if not data:
-                logger.error(f'【国企标签】国资认证中心网：映射数据表为空：{item}')
+                logger.error(f'【{table_name}】映射数据表为空：{item}')
             # 构建SQL语句
             columns_str = ", ".join(f"`{col}`" for col in data.keys())
             placeholders = ", ".join(["%s"] * len(data))
@@ -56,18 +61,18 @@ class StateEnterpriseLabelSpiderPipeline:
             values = tuple(data.values())
             # 执行SQL插入
             self.cursor_doris.execute(sql, values)
-            logger.info(f"【国企标签】国资认证中心网：数据插入到 Tidb 成功!")
+            logger.info(f"【{table_name}】数据插入到 Tidb 成功!")
         except Exception as e:
-            logger.error(f'【国企标签】国资认证中心网：插入数据失败，失败原因：{e}')
+            logger.error(f'【{table_name}】插入数据失败，失败原因：{e}')
 
     def send_to_kafka(self, item, topic):
         try:
             # 将 item 序列化为字典，然后发送到 Kafka
             self.kafka_producer.send(topic, value=dict(item))
             self.kafka_producer.flush()
-            logger.info(f"【国企标签】数据发送到 Kafka 成功!")
+            logger.info(f"【{topic}】数据发送到 Kafka 成功!")
         except Exception as e:
-            logger.error(f'【国企标签】发送数据到 Kafka 失败，失败原因：{e}')
+            logger.error(f'【{topic}】发送数据到 Kafka 失败，失败原因：{e}')
 
     def close_spider(self, spider):
         self.client.commit()

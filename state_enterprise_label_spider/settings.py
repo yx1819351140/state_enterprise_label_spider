@@ -31,7 +31,7 @@ ROBOTSTXT_OBEY = False
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = True
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -88,6 +88,8 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 
+LOG_LEVEL = 'INFO'
+
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
@@ -99,12 +101,19 @@ REDIS_PORT = 6379
 REDIS_DB = 15
 REDIS_KEY = 'WholeJuLiangDaiLi'
 
-# mysql
+# spider mysql
 MYSQL_HOST = '10.32.51.151'
 MYSQL_PORT = 4000
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = '6U=0@w#9m152nivS^C'
 MYSQL_DB = 'acq_com_gs'
+
+# doris
+DORIS_HOST = "10.32.49.61"
+DORIS_PORT = 9030
+DORIS_USER = 'root'
+DORIS_PASSWORD = "@aGf5GPnS25k"
+DORIS_DB = 'ods'
 
 # kafka
 KAFKA_BOOTSTRAP_SERVERS = ['10.32.50.101:9092', '10.32.50.102:9092', '10.32.50.103:9092']

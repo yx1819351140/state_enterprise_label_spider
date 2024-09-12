@@ -6,6 +6,7 @@
 from scrapy import signals
 import redis
 import random
+from twisted.internet.error import TCPTimedOutError
 
 
 class StateEnterpriseLabelSpiderSpiderMiddleware:
@@ -56,8 +57,9 @@ class StateEnterpriseLabelSpiderSpiderMiddleware:
 
 
 class StateEnterpriseLabelSpiderDownloaderMiddleware:
-    def __init__(self, proxy):
+    def __init__(self, proxy, proxies_list):
         self.proxy = proxy
+        self.proxies_list = proxies_list
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -73,7 +75,7 @@ class StateEnterpriseLabelSpiderDownloaderMiddleware:
         proxies_list = r.zrange(key, 0, -1)
         proxy = 'http://' + random.choice(proxies_list)
 
-        s = cls(proxy)
+        s = cls(proxy, proxies_list)
         s.proxies_list = proxies_list
         s.redis = r
         s.redis_key = key
@@ -97,11 +99,20 @@ class StateEnterpriseLabelSpiderDownloaderMiddleware:
         return response
 
     def process_exception(self, request, exception, spider):
+
+        if isinstance(exception, (TimeoutError, TCPTimedOutError)):
+            spider.logger.info(f"Timeout error for {request.url}, switching proxy")
+            new_proxy = 'http://' + random.choice(self.proxies_list)
+            spider.logger.info(f"Changing proxy from {self.proxy} to {new_proxy}")
+            request.meta['proxy'] = new_proxy
+            request.meta['retry_count'] = 0  # 重置失败计数器
+            return request  # 返回重新处理的请求
+
         # 增加失败次数
         request.meta['retry_count'] += 1
 
-        # 如果失败次数达到3次，更换代理并重新发送请求
-        if request.meta['retry_count'] >= 3:
+        # 如果失败次数达到5次，更换代理并重新发送请求
+        if request.meta['retry_count'] >= 5:
             spider.logger.info(f"Retrying {request.url} with a new proxy due to {exception}")
             new_proxy = 'http://' + random.choice(self.proxies_list)
             spider.logger.info(f"Changing proxy from {self.proxy} to {new_proxy}")
