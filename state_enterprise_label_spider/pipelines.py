@@ -8,7 +8,7 @@
 import pymysql
 import json
 from loguru import logger
-from state_enterprise_label_spider.items import BaseInfoItem, ListUnicornItem
+from state_enterprise_label_spider.items import BaseInfoItem, ListUnicornItem, HiddenChampionItem
 from kafka import KafkaProducer
 
 
@@ -33,12 +33,19 @@ class StateEnterpriseLabelSpiderPipeline:
         if isinstance(item, BaseInfoItem):
             table = '20221018001_3_data'
             topic = 'collect_guoqi_base_info'
-            self.save_data(item, table)
-            self.send_to_kafka(item, topic)
-        if isinstance(item, ListUnicornItem):
+        elif isinstance(item, ListUnicornItem):
             table = 'list_unicorn_enterprise'
             topic = 'collect_list_unicorn_enterprise'
+        elif isinstance(item, HiddenChampionItem):
+            table = 'hidden_champion_ent'
+            topic = 'collect_hidden_champion_ent'
+        else:
+            table = ''
+            topic = ''
+
+        if table:
             self.save_data(item, table)
+        if topic:
             self.send_to_kafka(item, topic)
         return item
 
