@@ -111,8 +111,8 @@ MYSQL_DB = 'acq_com_gs'
 # doris
 DORIS_HOST = "10.32.49.61"
 DORIS_PORT = 9030
-DORIS_USER = 'root'
-DORIS_PASSWORD = "@aGf5GPnS25k"
+DORIS_USER = 'yangxin'
+DORIS_PASSWORD = "yangxinQ123"
 DORIS_DB = 'ods'
 
 # kafka
