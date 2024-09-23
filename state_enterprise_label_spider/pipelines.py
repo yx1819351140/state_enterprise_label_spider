@@ -8,7 +8,7 @@
 import pymysql
 import json
 from loguru import logger
-from state_enterprise_label_spider.items import BaseInfoItem, ListUnicornItem, HiddenChampionItem
+from state_enterprise_label_spider.items import *
 from kafka import KafkaProducer
 
 
@@ -39,6 +39,9 @@ class StateEnterpriseLabelSpiderPipeline:
         elif isinstance(item, HiddenChampionItem):
             table = 'hidden_champion_ent'
             topic = 'collect_hidden_champion_ent'
+        elif isinstance(item, ECqsItem):
+            table = 'cp_cpbq_xkz_data'
+            topic = 'collect_cp_cpbq_xkz_data'
         else:
             table = ''
             topic = ''

@@ -70,3 +70,18 @@ class HiddenChampionItem(scrapy.Item):
     OPSCOPE = scrapy.Field()
     create_time = scrapy.Field()
     update_time = scrapy.Field()
+
+
+class ECqsItem(scrapy.Item):
+    creditname = scrapy.Field()
+    prodname = scrapy.Field()
+    licenceno = scrapy.Field()
+    licmatter = scrapy.Field()
+    orgaddr = scrapy.Field()
+    testlocus = scrapy.Field()
+    province = scrapy.Field()
+    certdate = scrapy.Field()
+    certvaliddate = scrapy.Field()
+    model2 = scrapy.Field()
+    create_time = scrapy.Field()
+    update_time = scrapy.Field()

@@ -115,6 +115,7 @@ class StateEnterpriseLabelSpiderDownloaderMiddleware:
         if request.meta['retry_count'] >= 5:
             spider.logger.info(f"Retrying {request.url} with a new proxy due to {exception}")
             new_proxy = 'http://' + random.choice(self.proxies_list)
+            self.proxy = new_proxy
             spider.logger.info(f"Changing proxy from {self.proxy} to {new_proxy}")
             request.meta['proxy'] = new_proxy
             request.meta['retry_count'] = 0  # 重置失败计数器

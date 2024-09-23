@@ -10,7 +10,7 @@ from scrapy.cmdline import execute
 
 
 def run_spider():
-    execute('scrapy crawl kuaicha'.split())
+    execute('scrapy crawl e-cqs'.split())
 
 
 if __name__ == '__main__':
