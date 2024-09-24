@@ -42,6 +42,9 @@ class StateEnterpriseLabelSpiderPipeline:
         elif isinstance(item, ECqsItem):
             table = 'cp_cpbq_xkz_data'
             topic = 'collect_cp_cpbq_xkz_data'
+        elif isinstance(item, QsztItem):
+            table = 'qszt_sc'
+            topic = 'collect_qszt_sc'
         else:
             table = ''
             topic = ''
@@ -71,6 +74,7 @@ class StateEnterpriseLabelSpiderPipeline:
             values = tuple(data.values())
             # 执行SQL插入
             self.cursor_doris.execute(sql, values)
+            self.client.commit()
             logger.info(f"【{table_name}】数据插入到 Tidb 成功!")
         except Exception as e:
             logger.error(f'【{table_name}】插入数据失败，失败原因：{e}')

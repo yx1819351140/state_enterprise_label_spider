@@ -85,3 +85,9 @@ class ECqsItem(scrapy.Item):
     model2 = scrapy.Field()
     create_time = scrapy.Field()
     update_time = scrapy.Field()
+
+
+class QsztItem(scrapy.Item):
+    title = scrapy.Field()
+    licenece = scrapy.Field()
+    text = scrapy.Field()
