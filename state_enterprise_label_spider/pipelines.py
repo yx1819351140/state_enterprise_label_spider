@@ -32,27 +32,22 @@ class StateEnterpriseLabelSpiderPipeline:
     def process_item(self, item, spider):
         if isinstance(item, BaseInfoItem):
             table = '20221018001_3_data'
-            topic = 'collect_guoqi_base_info'
         elif isinstance(item, ListUnicornItem):
             table = 'list_unicorn_enterprise'
-            topic = 'collect_list_unicorn_enterprise'
         elif isinstance(item, HiddenChampionItem):
             table = 'hidden_champion_ent'
-            topic = 'collect_hidden_champion_ent'
         elif isinstance(item, ECqsItem):
             table = 'cp_cpbq_xkz_data'
-            topic = 'collect_cp_cpbq_xkz_data'
         elif isinstance(item, QsztItem):
             table = 'qszt_sc'
-            topic = 'collect_qszt_sc'
+        elif isinstance(item, CfdiItem):
+            table = 'Clinical_License'
         else:
             table = ''
-            topic = ''
 
         if table:
             self.save_data(item, table)
-        if topic:
-            self.send_to_kafka(item, topic)
+            self.send_to_kafka(item, f'collect_{table}')
         return item
 
     def save_data(self, item, table_name):

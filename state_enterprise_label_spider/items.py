@@ -91,3 +91,18 @@ class QsztItem(scrapy.Item):
     title = scrapy.Field()
     licenece = scrapy.Field()
     text = scrapy.Field()
+
+
+class CfdiItem(scrapy.Item):
+    address = scrapy.Field()
+    areaName = scrapy.Field()
+    compName = scrapy.Field()
+    companyId = scrapy.Field()
+    linkMan = scrapy.Field()
+    linkTel = scrapy.Field()
+    recordNo = scrapy.Field()
+    level = scrapy.Field()
+    other_addr = scrapy.Field()
+    reg_date = scrapy.Field()
+    process_date = scrapy.Field()
+    status = scrapy.Field()
