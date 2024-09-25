@@ -18,7 +18,7 @@ from kafka import KafkaProducer
 from pprint import pprint
 
 
-def table2kafka(table, database):
+def  table2kafka(table, database):
     key_list = execute_sql(sql=f"SELECT group_concat(COLUMN_NAME)FROM information_schema.columns WHERE table_name='{table}'", database=f'{database}', tidb=True)[0][0].split(',')
     for tup in execute_sql(sql=f'SELECT * FROM {database}.{table};', database=f'{database}', tidb=True):
         value_list = list(tup)
@@ -27,7 +27,7 @@ def table2kafka(table, database):
         dd.pop('update_time')
         dd.pop('create_time')
         print(dd)
-        push_kafka(topic=table, dict=dd)
+        push_kafka(topic='collect_' + table, dict=dd)
         time.sleep(0.01)
 
 
@@ -123,4 +123,4 @@ def run_py(file, day, hour):
 
 
 if __name__ == '__main__':
-    ''''''
+    table2kafka('list_unicorn_enterprise', 'acq_com_gs')

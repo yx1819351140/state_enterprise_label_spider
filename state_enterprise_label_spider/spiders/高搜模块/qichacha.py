@@ -43,29 +43,29 @@ def process_and_insert_data(file_path, connection, kafka_producer):
     # 插入数据到数据库
     with connection.cursor() as cursor:
         for index, row in df.iterrows():
-            sql = """
-            INSERT INTO qcc_list_technology_enterprise (
-                company_name, company_status, legal_entity_name, reg_capital_amt, 
-                es_dt, usc_no, register_addr, province, city, 
-                region, phones, more_phones, email, register_type, 
-                tax_code, regis_code, org_code, insurance_amount, insurance_year, 
-                operation_date, nic_name, nic_1, nic_2, nic_3, qcc_name, qcc_nic_1, 
-                qcc_nic_2, qcc_nic_3, company_scale, history_name, english_name, data_source, 
-                address, company_intro, business_scope
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            try:
-                cursor.execute(sql, (
-                    row['company_name'], row['company_status'], row['legal_entity_name'], row['reg_capital_amt'],
-                    row['es_dt'], row['usc_no'], row['register_addr'], row['province'], row['city'],
-                    row['region'], row['phones'], row['more_phones'], row['email'], row['register_type'],
-                    row['tax_code'], row['regis_code'], row['org_code'], row['insurance_amount'], row['insurance_year'],
-                    row['operation_date'], row['nic_name'], row['nic_1'], row['nic_2'], row['nic_3'], row['qcc_name'], row['qcc_nic_1'],
-                    row['qcc_nic_2'], row['qcc_nic_3'], row['company_scale'], row['history_name'], row['english_name'], row['data_source'],
-                    row['address'], row['company_intro'], row['business_scope']
-                ))
-            except:
-                continue
+            # sql = """
+            # INSERT INTO qcc_list_technology_enterprise (
+            #     company_name, company_status, legal_entity_name, reg_capital_amt,
+            #     es_dt, usc_no, register_addr, province, city,
+            #     region, phones, more_phones, email, register_type,
+            #     tax_code, regis_code, org_code, insurance_amount, insurance_year,
+            #     operation_date, nic_name, nic_1, nic_2, nic_3, qcc_name, qcc_nic_1,
+            #     qcc_nic_2, qcc_nic_3, company_scale, history_name, english_name, data_source,
+            #     address, company_intro, business_scope
+            # ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            # """
+            # try:
+            #     cursor.execute(sql, (
+            #         row['company_name'], row['company_status'], row['legal_entity_name'], row['reg_capital_amt'],
+            #         row['es_dt'], row['usc_no'], row['register_addr'], row['province'], row['city'],
+            #         row['region'], row['phones'], row['more_phones'], row['email'], row['register_type'],
+            #         row['tax_code'], row['regis_code'], row['org_code'], row['insurance_amount'], row['insurance_year'],
+            #         row['operation_date'], row['nic_name'], row['nic_1'], row['nic_2'], row['nic_3'], row['qcc_name'], row['qcc_nic_1'],
+            #         row['qcc_nic_2'], row['qcc_nic_3'], row['company_scale'], row['history_name'], row['english_name'], row['data_source'],
+            #         row['address'], row['company_intro'], row['business_scope']
+            #     ))
+            # except:
+            #     continue
 
             data = {
                 'company_name': row['company_name'],
